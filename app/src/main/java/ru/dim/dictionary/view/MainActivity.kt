@@ -16,13 +16,15 @@ import ru.dim.dictionary.model.ViewState
 import ru.dim.dictionary.depricated.IPresenter
 import ru.dim.dictionary.depricated.IView
 import ru.dim.dictionary.model.entity.SearchResult
-import ru.dim.dictionary.depricated.MainPresenter
+//import ru.dim.dictionary.depricated.MainPresenter
 import ru.dim.dictionary.viewmodel.BaseViewModel
 import ru.dim.dictionary.viewmodel.MainViewModel
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import ru.dim.dictionary.app.DictionaryApp
+
 //import kotlinx.android.synthetic.main.fragment_splash.*
 //import org.koin.android.viewmodel.ext.android.viewModel
 //import ru.triptomeet.R
@@ -63,6 +65,7 @@ class MainActivity : BaseActivity<ViewState>() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        DictionaryApp.component.inject(this)
         viewModel.getLiveData().observe(this, observer)
 
         searchFab.setOnClickListener(onButtonClickListener)
