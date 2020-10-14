@@ -1,12 +1,10 @@
-package ru.dim.dictionary.presenter
+package ru.dim.dictionary.depricated
 
 import geekbrains.ru.translator.rx.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableObserver
 import ru.dim.dictionary.model.ViewState
-import ru.dim.dictionary.contract.IPresenter
-import ru.dim.dictionary.contract.IView
-import ru.dim.dictionary.iteractor.MainInteractor
+import ru.dim.dictionary.interactor.MainInteractor
 import ru.dim.dictionary.model.datasource.database.DataSourceLocal
 import ru.dim.dictionary.model.datasource.server.DataSourceRemote
 import ru.dim.dictionary.model.repository.RepositoryImplementation

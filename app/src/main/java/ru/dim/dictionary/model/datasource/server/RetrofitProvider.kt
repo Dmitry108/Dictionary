@@ -8,10 +8,11 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import ru.dim.dictionary.contract.IDataSource
+import ru.dim.dictionary.model.datasource.IDataSource
 import ru.dim.dictionary.model.entity.SearchResult
 
-class RetrofitProvider : IDataSource<List<SearchResult>> {
+class RetrofitProvider :
+    IDataSource<List<SearchResult>> {
 
     companion object {
         private const val BASE_URL = "https://dictionary.skyeng.ru/api/public/v1/"

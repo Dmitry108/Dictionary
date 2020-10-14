@@ -1,9 +1,8 @@
-package ru.dim.dictionary.iteractor
+package ru.dim.dictionary.interactor
 
 import io.reactivex.Observable
 import ru.dim.dictionary.model.ViewState
-import ru.dim.dictionary.contract.IInteractor
-import ru.dim.dictionary.contract.IRepository
+import ru.dim.dictionary.model.repository.IRepository
 import ru.dim.dictionary.model.entity.SearchResult
 
 class MainInteractor(
