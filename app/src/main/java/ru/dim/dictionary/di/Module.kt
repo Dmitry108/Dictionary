@@ -7,9 +7,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
-import ru.dim.dictionary.interactor.IInteractor
 import ru.dim.dictionary.interactor.MainInteractor
-import ru.dim.dictionary.model.ViewState
 import ru.dim.dictionary.model.datasource.IDataSource
 import ru.dim.dictionary.model.datasource.database.RoomProvider
 import ru.dim.dictionary.model.datasource.server.RetrofitProvider
@@ -23,13 +21,13 @@ import javax.inject.Singleton
 
 const val REMOTE_NAME = "remote"
 const val LOCAL_NAME = "local"
-//
-//@Module
-//abstract class ActivityModule {
-//    @ContributesAndroidInjector
-//    abstract fun contributesMainActivity(): MainActivity
-//}
-//
+
+@Module
+abstract class ActivityModule {
+    @ContributesAndroidInjector
+    abstract fun contributesMainActivity(): MainActivity
+}
+
 @Module(includes = [InteractorModule::class])
 abstract class ViewModelModule {
     @Binds

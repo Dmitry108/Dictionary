@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import dagger.android.AndroidInjection
 import geekbrains.ru.translator.view.main.SearchDialogFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.dim.dictionary.R
@@ -49,7 +50,8 @@ class MainActivity : BaseActivity<ViewState>() {
     private val observer = Observer<ViewState>{ renderData(it) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        DictionaryApp.component.inject(this)
+//        DictionaryApp.component.inject(this)
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
