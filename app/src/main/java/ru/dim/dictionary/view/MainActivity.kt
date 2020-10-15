@@ -5,7 +5,6 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Toast
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,23 +12,10 @@ import geekbrains.ru.translator.view.main.SearchDialogFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.dim.dictionary.R
 import ru.dim.dictionary.model.ViewState
-import ru.dim.dictionary.depricated.IPresenter
-import ru.dim.dictionary.depricated.IView
 import ru.dim.dictionary.model.entity.SearchResult
-//import ru.dim.dictionary.depricated.MainPresenter
-import ru.dim.dictionary.viewmodel.BaseViewModel
 import ru.dim.dictionary.viewmodel.MainViewModel
-
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import ru.dim.dictionary.app.DictionaryApp
-
-//import kotlinx.android.synthetic.main.fragment_splash.*
-//import org.koin.android.viewmodel.ext.android.viewModel
-//import ru.triptomeet.R
-//import ru.triptomeet.ui.IOnCallChangeScreen
-//import ru.triptomeet.ui.questionslist.QuestionsListFragment
+import javax.inject.Inject
 
 class MainActivity : BaseActivity<ViewState>() {
 
@@ -37,9 +23,10 @@ class MainActivity : BaseActivity<ViewState>() {
         private const val BOTTOM_SHEET_FRAGMENT_DIALOG_TAG = "bottom sheet tag"
     }
 
-    override val viewModel: MainViewModel by lazy {
-        ViewModelProvider.NewInstanceFactory().create(MainViewModel::class.java)
-    }
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    override lateinit var viewModel: MainViewModel
 
     private var adapter: MainRecyclerViewAdapter? = null
 
@@ -62,10 +49,11 @@ class MainActivity : BaseActivity<ViewState>() {
     private val observer = Observer<ViewState>{ renderData(it) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        DictionaryApp.component.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        DictionaryApp.component.inject(this)
+        viewModel = viewModelFactory.create(MainViewModel::class.java)
         viewModel.getLiveData().observe(this, observer)
 
         searchFab.setOnClickListener(onButtonClickListener)

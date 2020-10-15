@@ -1,7 +1,12 @@
 package ru.dim.dictionary.di
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
+import dagger.android.ContributesAndroidInjector
+import dagger.multibindings.IntoMap
 import ru.dim.dictionary.interactor.IInteractor
 import ru.dim.dictionary.interactor.MainInteractor
 import ru.dim.dictionary.model.ViewState
@@ -11,17 +16,37 @@ import ru.dim.dictionary.model.datasource.server.RetrofitProvider
 import ru.dim.dictionary.model.entity.SearchResult
 import ru.dim.dictionary.model.repository.IRepository
 import ru.dim.dictionary.model.repository.RepositoryImplementation
+import ru.dim.dictionary.view.MainActivity
+import ru.dim.dictionary.viewmodel.MainViewModel
 import javax.inject.Named
 import javax.inject.Singleton
 
 const val REMOTE_NAME = "remote"
 const val LOCAL_NAME = "local"
+//
+//@Module
+//abstract class ActivityModule {
+//    @ContributesAndroidInjector
+//    abstract fun contributesMainActivity(): MainActivity
+//}
+//
+@Module(includes = [InteractorModule::class])
+abstract class ViewModelModule {
+    @Binds
+    abstract fun bindViewModelFactory(viewModelFactory: ViewModelFactory): ViewModelProvider.Factory
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MainViewModel::class)
+    protected abstract fun mainViewModel(mainViewModel: MainViewModel): ViewModel
+}
 
 @Module
 class InteractorModule {
+    @Provides
     fun provideMainInteractor(@Named(REMOTE_NAME) remoteRepository: IRepository<List<SearchResult>>,
-                              @Named(LOCAL_NAME) localRepository: IRepository<List<SearchResult>>
-    ): IInteractor<ViewState> = MainInteractor(remoteRepository, localRepository)
+                              @Named(LOCAL_NAME) localRepository: IRepository<List<SearchResult>>) =
+        MainInteractor(remoteRepository, localRepository)
 }
 
 @Module

@@ -4,17 +4,11 @@ import androidx.lifecycle.LiveData
 import io.reactivex.observers.DisposableObserver
 import ru.dim.dictionary.interactor.MainInteractor
 import ru.dim.dictionary.model.ViewState
-import ru.dim.dictionary.model.datasource.database.DataSourceLocal
-import ru.dim.dictionary.model.datasource.server.DataSourceRemote
-import ru.dim.dictionary.model.repository.RepositoryImplementation
+import javax.inject.Inject
 
-class MainViewModel(
-    private val interactor: MainInteractor = MainInteractor(
-        RepositoryImplementation(DataSourceRemote()),
-        RepositoryImplementation(DataSourceLocal()))
+class MainViewModel @Inject constructor(
+    private val interactor: MainInteractor
 ) : BaseViewModel<ViewState>(){
-
-    //private var viewState: ViewState? = null
 
     override fun getData(word: String, isOnline: Boolean): LiveData<ViewState> {
             compositeDisposable.add(

@@ -11,6 +11,8 @@ class DictionaryApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        component = DaggerAppComponent.create()
+        component = DaggerAppComponent.builder()
+            .application(this)
+            .build()
     }
 }
