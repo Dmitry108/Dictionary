@@ -1,30 +1,19 @@
 package ru.dim.dictionary.app
 
-import android.app.Activity
 import android.app.Application
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasActivityInjector
-import ru.dim.dictionary.di.AppComponent
-import ru.dim.dictionary.di.DaggerAppComponent
-import javax.inject.Inject
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
+import ru.dim.dictionary.di.*
 
-class DictionaryApp : Application(), HasActivityInjector {
-//    companion object {
-//        lateinit var component: AppComponent
-//    }
-
-    @Inject
-    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
+class DictionaryApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-//        component =
-        DaggerAppComponent.builder()
-            .application(this)
-            .build()
-            .inject(this)
+        startKoin{
+            androidLogger()
+            androidContext(this@DictionaryApp)
+            modules(listOf(viewModelModule, interactorModule, repositoryModule))
+        }
     }
-
-    override fun activityInjector(): DispatchingAndroidInjector<Activity> = dispatchingAndroidInjector
 }

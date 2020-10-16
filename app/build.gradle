@@ -58,4 +58,7 @@ dependencies {
     implementation 'com.google.dagger:dagger-android-support:2.17'
     kapt 'com.google.dagger:dagger-android-processor:2.17'
     kapt 'com.google.dagger:dagger-compiler:2.17'
+    // Koin
+    implementation 'org.koin:koin-android:2.0.1'
+    implementation 'org.koin:koin-android-viewmodel:2.0.1'
 }

@@ -4,9 +4,8 @@ import androidx.lifecycle.LiveData
 import io.reactivex.observers.DisposableObserver
 import ru.dim.dictionary.interactor.MainInteractor
 import ru.dim.dictionary.model.ViewState
-import javax.inject.Inject
 
-class MainViewModel @Inject constructor(
+class MainViewModel (
     private val interactor: MainInteractor
 ) : BaseViewModel<ViewState>(){
 

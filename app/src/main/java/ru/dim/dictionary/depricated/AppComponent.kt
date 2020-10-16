@@ -1,11 +1,10 @@
-package ru.dim.dictionary.di
+package ru.dim.dictionary.depricated
 
 import android.app.Application
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule
 import ru.dim.dictionary.app.DictionaryApp
-import ru.dim.dictionary.view.MainActivity
 import javax.inject.Singleton
 
 @Component(modules = [

@@ -1,4 +1,4 @@
-package ru.dim.dictionary.di
+package ru.dim.dictionary.depricated
 
 import androidx.lifecycle.ViewModel
 import dagger.MapKey

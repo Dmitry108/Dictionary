@@ -1,4 +1,4 @@
-package ru.dim.dictionary.di
+package ru.dim.dictionary.depricated
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -7,6 +7,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
+import ru.dim.dictionary.di.LOCAL_NAME
+import ru.dim.dictionary.di.REMOTE_NAME
 import ru.dim.dictionary.interactor.MainInteractor
 import ru.dim.dictionary.model.datasource.IDataSource
 import ru.dim.dictionary.model.datasource.database.RoomProvider
@@ -18,9 +20,6 @@ import ru.dim.dictionary.view.MainActivity
 import ru.dim.dictionary.viewmodel.MainViewModel
 import javax.inject.Named
 import javax.inject.Singleton
-
-const val REMOTE_NAME = "remote"
-const val LOCAL_NAME = "local"
 
 @Module
 abstract class ActivityModule {

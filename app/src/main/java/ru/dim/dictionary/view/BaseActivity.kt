@@ -1,10 +1,7 @@
 package ru.dim.dictionary.view
 
-import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import ru.dim.dictionary.model.ViewState
-import ru.dim.dictionary.depricated.IPresenter
-import ru.dim.dictionary.depricated.IView
 import ru.dim.dictionary.viewmodel.BaseViewModel
 
 abstract class BaseActivity<T: ViewState> : AppCompatActivity() {

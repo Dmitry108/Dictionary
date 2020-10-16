@@ -6,17 +6,14 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import dagger.android.AndroidInjection
 import geekbrains.ru.translator.view.main.SearchDialogFragment
 import kotlinx.android.synthetic.main.activity_main.*
+import org.koin.android.viewmodel.ext.android.viewModel
 import ru.dim.dictionary.R
 import ru.dim.dictionary.model.ViewState
 import ru.dim.dictionary.model.entity.SearchResult
 import ru.dim.dictionary.viewmodel.MainViewModel
-import ru.dim.dictionary.app.DictionaryApp
-import javax.inject.Inject
 
 class MainActivity : BaseActivity<ViewState>() {
 
@@ -24,10 +21,7 @@ class MainActivity : BaseActivity<ViewState>() {
         private const val BOTTOM_SHEET_FRAGMENT_DIALOG_TAG = "bottom sheet tag"
     }
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    override lateinit var viewModel: MainViewModel
+    override val viewModel: MainViewModel by viewModel()
 
     private var adapter: MainRecyclerViewAdapter? = null
 
@@ -50,12 +44,9 @@ class MainActivity : BaseActivity<ViewState>() {
     private val observer = Observer<ViewState>{ renderData(it) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-//        DictionaryApp.component.inject(this)
-        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        viewModel = viewModelFactory.create(MainViewModel::class.java)
         viewModel.getLiveData().observe(this, observer)
 
         searchFab.setOnClickListener(onButtonClickListener)
