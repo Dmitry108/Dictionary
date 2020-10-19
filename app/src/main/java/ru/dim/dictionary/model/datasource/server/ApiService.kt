@@ -1,11 +1,11 @@
 package ru.dim.dictionary.model.datasource.server
 
-import io.reactivex.Observable
+import kotlinx.coroutines.Deferred
 import retrofit2.http.GET
 import retrofit2.http.Query
 import ru.dim.dictionary.model.entity.SearchResult
 
 interface ApiService {
     @GET("words/search")
-    fun search (@Query("search") word: String): Observable<List<SearchResult>>
+    fun searchAsync (@Query("search") word: String): Deferred<List<SearchResult>>
 }

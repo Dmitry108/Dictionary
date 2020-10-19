@@ -5,21 +5,23 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import geekbrains.ru.translator.view.main.SearchDialogFragment
 import kotlinx.android.synthetic.main.activity_main.*
+import org.koin.android.viewmodel.ext.android.viewModel
 import ru.dim.dictionary.R
 import ru.dim.dictionary.model.ViewState
-import ru.dim.dictionary.contract.IPresenter
-import ru.dim.dictionary.contract.IView
 import ru.dim.dictionary.model.entity.SearchResult
-import ru.dim.dictionary.presenter.MainPresenter
+import ru.dim.dictionary.viewmodel.MainViewModel
 
 class MainActivity : BaseActivity<ViewState>() {
 
     companion object {
         private const val BOTTOM_SHEET_FRAGMENT_DIALOG_TAG = "bottom sheet tag"
     }
+
+    override val viewModel: MainViewModel by viewModel()
 
     private var adapter: MainRecyclerViewAdapter? = null
 
@@ -34,19 +36,18 @@ class MainActivity : BaseActivity<ViewState>() {
         val searchDialogFragment = SearchDialogFragment.newInstance()
         searchDialogFragment.setOnSearchClickListener(object : SearchDialogFragment.OnSearchClickListener {
             override fun onClick(searchWord: String) {
-                presenter.getData(searchWord, true)
+                viewModel.getData(searchWord, true)
             }
         })
         searchDialogFragment.show(supportFragmentManager, BOTTOM_SHEET_FRAGMENT_DIALOG_TAG)
     }
-
-    override fun createPresenter(): IPresenter<ViewState, IView> {
-        return MainPresenter()
-    }
+    private val observer = Observer<ViewState>{ renderData(it) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        viewModel.getLiveData().observe(this, observer)
 
         searchFab.setOnClickListener(onButtonClickListener)
     }
@@ -77,7 +78,7 @@ class MainActivity : BaseActivity<ViewState>() {
         showViewError()
         errorTextView.text = error ?: getString(R.string.undefined_error)
         reloadButton.setOnClickListener {
-            presenter.getData("hi", true)
+            viewModel.getData("hi", true)
         }
     }
 
