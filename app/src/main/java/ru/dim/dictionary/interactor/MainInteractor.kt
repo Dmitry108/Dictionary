@@ -1,6 +1,5 @@
 package ru.dim.dictionary.interactor
 
-import io.reactivex.Observable
 import ru.dim.dictionary.model.ViewState
 import ru.dim.dictionary.model.repository.IRepository
 import ru.dim.dictionary.model.entity.SearchResult
@@ -10,10 +9,11 @@ class MainInteractor (
     private val localRepository: IRepository<List<SearchResult>>
 ) : IInteractor<ViewState> {
 
-    override fun getData(word: String, isOnline: Boolean): Observable<ViewState> =
-        if (isOnline) {
-            remoteRepository.getData(word).map { ViewState.Success(it) }
-        } else {
-            localRepository.getData(word).map { ViewState.Success(it) }
-        }
+    override suspend fun getData(word: String, isOnline: Boolean): ViewState =
+        ViewState.Success(
+            (if (isOnline) {
+                remoteRepository
+            } else {
+                localRepository
+            }).getData(word))
 }

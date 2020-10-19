@@ -1,8 +1,7 @@
 package ru.dim.dictionary.model.datasource.server
 
-import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import geekbrains.ru.translator.model.datasource.BaseInterceptor
-import io.reactivex.Observable
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -18,22 +17,19 @@ class RetrofitProvider :
         private const val BASE_URL = "https://dictionary.skyeng.ru/api/public/v1/"
     }
 
-    override fun getData(word: String): Observable<List<SearchResult>> {
-        return getService(BaseInterceptor.interceptor).search(word)
-    }
+    override suspend fun getData(word: String): List<SearchResult> =
+        getService(BaseInterceptor.interceptor).searchAsync(word).await()
 
-    private fun getService(interceptor: Interceptor): ApiService {
-        return createRetrofit(interceptor).create(ApiService::class.java)
-    }
+    private fun getService(interceptor: Interceptor): ApiService  =
+        createRetrofit(interceptor).create(ApiService::class.java)
 
-    private fun createRetrofit(interceptor: Interceptor): Retrofit {
-        return Retrofit.Builder()
+    private fun createRetrofit(interceptor: Interceptor): Retrofit =
+        Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .client(createOkHttpClient(interceptor))
             .build()
-    }
 
     private fun createOkHttpClient(interceptor: Interceptor): OkHttpClient {
         val httpClient = OkHttpClient.Builder()
