@@ -5,10 +5,13 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Toast
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import geekbrains.ru.translator.view.main.SearchDialogFragment
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel
 import ru.dim.dictionary.R
 import ru.dim.dictionary.model.ViewState
@@ -32,6 +35,7 @@ class MainActivity : BaseActivity<ViewState>() {
             }
         }
 
+    @ExperimentalCoroutinesApi
     private val onButtonClickListener = View.OnClickListener{
         val searchDialogFragment = SearchDialogFragment.newInstance()
         searchDialogFragment.setOnSearchClickListener(object : SearchDialogFragment.OnSearchClickListener {
@@ -41,13 +45,17 @@ class MainActivity : BaseActivity<ViewState>() {
         })
         searchDialogFragment.show(supportFragmentManager, BOTTOM_SHEET_FRAGMENT_DIALOG_TAG)
     }
-    private val observer = Observer<ViewState>{ renderData(it) }
 
+    @ExperimentalCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        viewModel.getLiveData().observe(this, observer)
+        lifecycleScope.launch{
+            viewModel.getChannel().consumeEach {
+                renderData(it)
+            }
+        }
 
         searchFab.setOnClickListener(onButtonClickListener)
     }
