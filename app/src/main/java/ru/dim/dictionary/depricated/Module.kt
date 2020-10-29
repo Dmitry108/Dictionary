@@ -16,7 +16,7 @@ import ru.dim.dictionary.model.datasource.server.RetrofitProvider
 import ru.dim.dictionary.model.entity.SearchResult
 import ru.dim.dictionary.model.repository.IRepository
 import ru.dim.dictionary.model.repository.RepositoryImplementation
-import ru.dim.dictionary.view.MainActivity
+import ru.dim.dictionary.view.main.MainActivity
 import ru.dim.dictionary.viewmodel.MainViewModel
 import javax.inject.Named
 import javax.inject.Singleton

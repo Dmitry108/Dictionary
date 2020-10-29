@@ -1,5 +1,6 @@
-package ru.dim.dictionary.view
+package ru.dim.dictionary.view.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.View.GONE
@@ -16,6 +17,11 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import ru.dim.dictionary.R
 import ru.dim.dictionary.model.ViewState
 import ru.dim.dictionary.model.entity.SearchResult
+import ru.dim.dictionary.utils.DESCRIPTION
+import ru.dim.dictionary.utils.PICTURE_URL
+import ru.dim.dictionary.utils.WORD
+import ru.dim.dictionary.view.base.BaseActivity
+import ru.dim.dictionary.view.description.DescriptionActivity
 import ru.dim.dictionary.viewmodel.MainViewModel
 
 class MainActivity : BaseActivity<ViewState>() {
@@ -29,9 +35,14 @@ class MainActivity : BaseActivity<ViewState>() {
     private var adapter: MainRecyclerViewAdapter? = null
 
     private val onListItemClickListener: MainRecyclerViewAdapter.OnListItemClickListener =
-        object : MainRecyclerViewAdapter.OnListItemClickListener {
+        object :
+            MainRecyclerViewAdapter.OnListItemClickListener {
             override fun onItemClick(data: SearchResult) {
-                Toast.makeText(this@MainActivity, data.text, Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this@MainActivity, DescriptionActivity::class.java).apply {
+                    putExtra(WORD, data.text)
+                    putExtra(DESCRIPTION, data.meanings[0].translation.text)
+                    putExtra(PICTURE_URL, data.meanings[0].imageUrl)
+                })
             }
         }
 
@@ -43,7 +54,9 @@ class MainActivity : BaseActivity<ViewState>() {
                 viewModel.getData(searchWord, true)
             }
         })
-        searchDialogFragment.show(supportFragmentManager, BOTTOM_SHEET_FRAGMENT_DIALOG_TAG)
+        searchDialogFragment.show(supportFragmentManager,
+            BOTTOM_SHEET_FRAGMENT_DIALOG_TAG
+        )
     }
 
     @ExperimentalCoroutinesApi
@@ -75,7 +88,11 @@ class MainActivity : BaseActivity<ViewState>() {
             showViewSuccess()
             if (adapter == null) {
                 mainRecyclerView.layoutManager = LinearLayoutManager(applicationContext)
-                mainRecyclerView.adapter = MainRecyclerViewAdapter(data, onListItemClickListener)
+                mainRecyclerView.adapter =
+                    MainRecyclerViewAdapter(
+                        data,
+                        onListItemClickListener
+                    )
             } else {
                 adapter!!.setData(data)
             }

@@ -1,4 +1,4 @@
-package ru.dim.dictionary.view
+package ru.dim.dictionary.view.main
 
 import android.view.LayoutInflater
 import android.view.View
