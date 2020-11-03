@@ -9,7 +9,7 @@ import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
 import ru.dim.dictionary.di.LOCAL_NAME
 import ru.dim.dictionary.di.REMOTE_NAME
-import ru.dim.dictionary.interactor.MainInteractor
+import ru.dim.dictionary.interactor.DataInteractor
 import ru.dim.dictionary.model.datasource.IDataSource
 import ru.dim.dictionary.model.datasource.database.RoomProvider
 import ru.dim.dictionary.model.datasource.server.RetrofitProvider
@@ -43,7 +43,7 @@ class InteractorModule {
     @Provides
     fun provideMainInteractor(@Named(REMOTE_NAME) remoteRepository: IRepository<List<SearchResult>>,
                               @Named(LOCAL_NAME) localRepository: IRepository<List<SearchResult>>) =
-        MainInteractor(remoteRepository, localRepository)
+        DataInteractor(remoteRepository, localRepository)
 }
 
 @Module

@@ -3,15 +3,16 @@ package ru.dim.dictionary.viewmodel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
-import ru.dim.dictionary.interactor.MainInteractor
+import ru.dim.dictionary.interactor.DataInteractor
 import ru.dim.dictionary.model.ViewState
+import ru.dim.dictionary.model.entity.SearchResult
 
 class MainViewModel (
-    private val interactor: MainInteractor
+    private val interactor: DataInteractor
 ) : BaseViewModel<ViewState>(){
 
     @ExperimentalCoroutinesApi
-    override fun getData(word: String, isOnline: Boolean) {
+    fun getData(word: String, isOnline: Boolean) {
         stopJobs()
         coroutineScope.launch (Dispatchers.IO) {
             viewModelChannel.send(ViewState.Loading(null))
@@ -32,5 +33,9 @@ class MainViewModel (
             viewModelChannel.send(ViewState.Success(null))
         }
         super.onCleared()
+    }
+
+    fun saveCurrentResult(data: SearchResult) {
+        interactor.currentResult = data
     }
 }

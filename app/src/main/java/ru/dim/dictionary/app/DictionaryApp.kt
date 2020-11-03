@@ -8,8 +8,14 @@ import ru.dim.dictionary.di.*
 
 class DictionaryApp : Application() {
 
+    companion object{
+        private lateinit var instance: DictionaryApp
+        fun getInstance() = instance
+    }
+
     override fun onCreate() {
         super.onCreate()
+        instance = this
         startKoin{
             androidLogger()
             androidContext(this@DictionaryApp)

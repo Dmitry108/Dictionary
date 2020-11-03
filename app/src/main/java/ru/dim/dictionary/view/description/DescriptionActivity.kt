@@ -4,43 +4,59 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_description.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.launch
+import org.koin.android.viewmodel.ext.android.viewModel
 import ru.dim.dictionary.R
-import ru.dim.dictionary.utils.DESCRIPTION
-import ru.dim.dictionary.utils.PICTURE_URL
-import ru.dim.dictionary.utils.WORD
-import ru.dim.dictionary.utils.isOnline
+import ru.dim.dictionary.model.ViewState
+import ru.dim.dictionary.model.entity.SearchResult
+import ru.dim.dictionary.view.base.BaseActivity
+import ru.dim.dictionary.viewmodel.DescriptionViewModel
 
-class DescriptionActivity : AppCompatActivity() {
+class DescriptionActivity : BaseActivity<ViewState>() {
 
+    override val viewModel: DescriptionViewModel by viewModel()
+
+    @ExperimentalCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_description)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        description_layout.setOnRefreshListener { refreshPicture() }
-        description_layout.isRefreshing = true
-        refreshPicture()
+        description_layout.setOnRefreshListener { viewModel.showData() }
+
+        lifecycleScope.launch{
+            viewModel.getChannel().consumeEach { renderData(it) }
+        }
+        viewModel.showData()
     }
 
-    private fun refreshPicture() {
-        if (isOnline(applicationContext)) {
-            showData()
-        } else {
-            Toast.makeText(this, resources.getString(R.string.internetIsNotAvailable), Toast.LENGTH_SHORT).show()
-//            showDialog()
-            stopRefreshing()
+    override fun renderData(viewState: ViewState) {
+        when(viewState){
+            is ViewState.Success<*> -> showData(viewState.data as? SearchResult)
+            is ViewState.Error -> showError(viewState.error.message)
+            is ViewState.Loading -> showLoading()
         }
     }
 
-    private fun showData(){
-        val bundle = intent.extras
-        bundle?.let {
-            description_header.text = bundle.getString(WORD)
-            description_textview.text = bundle.getString(DESCRIPTION)
-            val imageUrl = bundle.getString(PICTURE_URL)
+    private fun showLoading() {
+        description_layout.isRefreshing = true
+    }
+
+    private fun showError(message: String?){
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+        stopRefreshing()
+    }
+
+    private fun showData(data: SearchResult?){
+        data?.let {
+            description_header.text = data.text
+            description_textview.text = data.meanings[0].translation.text
+            val imageUrl = data.meanings[0].imageUrl
             if (imageUrl.isNullOrBlank()) {
                 stopRefreshing()
             } else {

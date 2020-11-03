@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import geekbrains.ru.translator.view.main.SearchDialogFragment
@@ -17,9 +16,6 @@ import org.koin.android.viewmodel.ext.android.viewModel
 import ru.dim.dictionary.R
 import ru.dim.dictionary.model.ViewState
 import ru.dim.dictionary.model.entity.SearchResult
-import ru.dim.dictionary.utils.DESCRIPTION
-import ru.dim.dictionary.utils.PICTURE_URL
-import ru.dim.dictionary.utils.WORD
 import ru.dim.dictionary.view.base.BaseActivity
 import ru.dim.dictionary.view.description.DescriptionActivity
 import ru.dim.dictionary.viewmodel.MainViewModel
@@ -35,14 +31,10 @@ class MainActivity : BaseActivity<ViewState>() {
     private var adapter: MainRecyclerViewAdapter? = null
 
     private val onListItemClickListener: MainRecyclerViewAdapter.OnListItemClickListener =
-        object :
-            MainRecyclerViewAdapter.OnListItemClickListener {
+        object : MainRecyclerViewAdapter.OnListItemClickListener {
             override fun onItemClick(data: SearchResult) {
-                startActivity(Intent(this@MainActivity, DescriptionActivity::class.java).apply {
-                    putExtra(WORD, data.text)
-                    putExtra(DESCRIPTION, data.meanings[0].translation.text)
-                    putExtra(PICTURE_URL, data.meanings[0].imageUrl)
-                })
+                viewModel.saveCurrentResult(data)
+                startActivity(Intent(this@MainActivity, DescriptionActivity::class.java))
             }
         }
 
@@ -73,14 +65,16 @@ class MainActivity : BaseActivity<ViewState>() {
         searchFab.setOnClickListener(onButtonClickListener)
     }
 
+    @ExperimentalCoroutinesApi
     override fun renderData(viewState: ViewState) {
         when (viewState) {
-            is ViewState.Success -> onSuccess(viewState.data)
+            is ViewState.Success<*> -> onSuccess(viewState.data as? List<SearchResult>)
             is ViewState.Loading -> showViewLoading(viewState.process)
             is ViewState.Error -> showErrorScreen(viewState.error.message)
         }
     }
 
+    @ExperimentalCoroutinesApi
     private fun onSuccess(data: List<SearchResult>?) {
         if (data == null || data.isEmpty()) {
             showErrorScreen(getString(R.string.empty_server_response_on_success))
@@ -88,17 +82,14 @@ class MainActivity : BaseActivity<ViewState>() {
             showViewSuccess()
             if (adapter == null) {
                 mainRecyclerView.layoutManager = LinearLayoutManager(applicationContext)
-                mainRecyclerView.adapter =
-                    MainRecyclerViewAdapter(
-                        data,
-                        onListItemClickListener
-                    )
+                mainRecyclerView.adapter = MainRecyclerViewAdapter(data, onListItemClickListener)
             } else {
                 adapter!!.setData(data)
             }
         }
     }
 
+    @ExperimentalCoroutinesApi
     private fun showErrorScreen(error: String?) {
         showViewError()
         errorTextView.text = error ?: getString(R.string.undefined_error)

@@ -15,7 +15,7 @@ abstract class BaseViewModel<T: ViewState> : ViewModel() {
     protected val coroutineScope = viewModelScope.plus(
         CoroutineExceptionHandler { _, throwable -> handleError(throwable) })
 
-    abstract fun getData(word: String, isOnline: Boolean)
+//    abstract fun getData(word: String, isOnline: Boolean)
     abstract fun handleError(throwable: Throwable)
 
     protected fun stopJobs() {
