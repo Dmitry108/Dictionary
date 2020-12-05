@@ -10,26 +10,21 @@ class RoomProvider (private val localDAO: LocalDAO) :
     override suspend fun getData(word: String): List<SearchResult> =
         mapMeaningEntityToSearchResult(localDAO.getData(word))
 
-    private fun mapMeaningEntityToSearchResult(meanings: List<MeaningEntity>): List<SearchResult> {
-        val searchResults = ArrayList<SearchResult>()
-        if (!meanings.isNullOrEmpty()) {
-            for (entity in meanings){
-                searchResults.add(
-                    SearchResult(
-                        id = entity.id,
-                        text = entity.text,
-                        meanings = listOf(Meaning(
-                            id = entity.id,
-                            partOfSpeechCode = entity.partOfSpeechCode,
-                            translation = Translation(text = entity.translation, note = ""),
-                            previewUrl = "",
-                            imageUrl = "",
-                            transcription = entity.transcription,
-                            soundUrl = ""))
-                    ))
-        }}
-        return searchResults
-    }
+    private fun mapMeaningEntityToSearchResult(meanings: List<MeaningEntity>): List<SearchResult> =
+        meanings.map {
+            SearchResult(
+                id = it.id,
+                text = it.text,
+                meanings = listOf(Meaning(
+                    id = it.id,
+                    partOfSpeechCode = it.partOfSpeechCode,
+                    translation = Translation(text = it.translation, note = ""),
+                    previewUrl = "",
+                    imageUrl = "",
+                    transcription = it.transcription,
+                    soundUrl = ""))
+            )
+        }
 
     override suspend fun getAll(): List<SearchResult> =
         mapDatabaseEntityToSearchResult(localDAO.getAllWords())
@@ -49,31 +44,22 @@ class RoomProvider (private val localDAO: LocalDAO) :
     }
 
     override suspend fun saveToDatabase(searchResults: List<SearchResult>) {
-        mapSearchResultToDatabaseEntity(searchResults)
-            ?.let {
-            localDAO.insertWord(it)
-        }
-        mapSearchResultToMeaningEntities(searchResults)?.let{localDAO.insertAllMeanings(it)}
+        mapSearchResultToDatabaseEntity(searchResults).let { localDAO.insertWord(it) }
+        mapSearchResultToMeaningEntities(searchResults).let { localDAO.insertAllMeanings(it) }
     }
 
-    private fun mapSearchResultToDatabaseEntity(searchResults: List<SearchResult>): DatabaseEntity? {
+    private fun mapSearchResultToDatabaseEntity(searchResults: List<SearchResult>): DatabaseEntity {
         return DatabaseEntity(id = searchResults[0].id, text = searchResults[0].text)
     }
-    private fun mapSearchResultToMeaningEntities(searchResults: List<SearchResult>): List<MeaningEntity>? {
-        val meaningEntities = ArrayList<MeaningEntity>()
-        if (!searchResults.isNullOrEmpty()) {
-            for (entity in searchResults){
-                meaningEntities.add(
-                    MeaningEntity(
-                        id = entity.id,
-                        text_id = searchResults[0].id,
-                        text = entity.text,
-                        partOfSpeechCode = entity.meanings?.get(0)?.partOfSpeechCode ?: "",
-                        translation = entity.meanings?.get(0)?.translation?.text ?: "",
-                        transcription = entity.meanings?.get(0)?.transcription ?: "")
-                )
-            }
+
+    private fun mapSearchResultToMeaningEntities(searchResults: List<SearchResult>): List<MeaningEntity> =
+        searchResults.map { entity ->
+            MeaningEntity(
+                id = entity.id,
+                text_id = searchResults[0].id,
+                text = entity.text,
+                partOfSpeechCode = entity.meanings?.get(0)?.partOfSpeechCode ?: "",
+                translation = entity.meanings?.get(0)?.translation?.text ?: "",
+                transcription = entity.meanings?.get(0)?.transcription ?: "")
         }
-        return meaningEntities
-    }
 }
