@@ -55,8 +55,8 @@ class DescriptionActivity : BaseActivity<ViewState>() {
     private fun showData(data: SearchResult?){
         data?.let {
             description_header.text = data.text
-            description_textview.text = data.meanings[0].translation.text
-            val imageUrl = data.meanings[0].imageUrl
+            description_textview.text = data.meanings?.get(0)?.translation?.text
+            val imageUrl = data.meanings?.get(0)?.imageUrl
             if (imageUrl.isNullOrBlank()) {
                 stopRefreshing()
             } else {

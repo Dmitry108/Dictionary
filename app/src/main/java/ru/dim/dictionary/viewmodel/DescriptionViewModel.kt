@@ -5,11 +5,11 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import ru.dim.dictionary.R
 import ru.dim.dictionary.app.DictionaryApp
-import ru.dim.dictionary.interactor.DataInteractor
+import ru.dim.dictionary.interactor.IDataInteractor
 import ru.dim.dictionary.model.ViewState
 import ru.dim.dictionary.utils.isOnline
 
-class DescriptionViewModel(private val interactor: DataInteractor) :
+class DescriptionViewModel(private val interactor: IDataInteractor<ViewState>) :
     BaseViewModel<ViewState>() {
 
     @ExperimentalCoroutinesApi

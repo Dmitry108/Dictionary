@@ -1,7 +1,6 @@
 package ru.dim.dictionary.model.datasource.server
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import geekbrains.ru.translator.model.datasource.BaseInterceptor
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

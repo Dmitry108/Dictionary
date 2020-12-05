@@ -38,9 +38,9 @@ class MainRecyclerViewAdapter (
         fun bind(data: SearchResult) {
             if (layoutPosition != RecyclerView.NO_POSITION) {
                 itemView.headerTextView.text = data.text
-                itemView.descriptionTextView.text = data.meanings[0].translation.text
+                itemView.descriptionTextView.text = data.meanings?.get(0)?.translation?.text
                 Picasso.with(itemView.context)
-                    .load("https:${data.meanings[0].previewUrl}")
+                    .load("https:${data.meanings?.get(0)?.previewUrl}")
                     .into(itemView.imageView)
                 itemView.setOnClickListener { openInNewWindow(data) }
             }
