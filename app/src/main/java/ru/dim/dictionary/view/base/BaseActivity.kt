@@ -1,4 +1,4 @@
-package ru.dim.dictionary.view
+package ru.dim.dictionary.view.base
 
 import androidx.appcompat.app.AppCompatActivity
 import ru.dim.dictionary.model.ViewState

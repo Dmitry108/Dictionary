@@ -1,33 +1,47 @@
 package ru.dim.dictionary.viewmodel
 
-import androidx.lifecycle.LiveData
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import ru.dim.dictionary.interactor.MainInteractor
+import ru.dim.dictionary.interactor.IDataInteractor
 import ru.dim.dictionary.model.ViewState
+import ru.dim.dictionary.model.entity.SearchResult
+import ru.dim.dictionary.utils.isOnline
 
 class MainViewModel (
-    private val interactor: MainInteractor
+    private val interactor: IDataInteractor<ViewState>
 ) : BaseViewModel<ViewState>(){
 
-    override fun getData(word: String, isOnline: Boolean): LiveData<ViewState> {
-        liveData.value = ViewState.Loading(null)
+    @ExperimentalCoroutinesApi
+    fun getData(word: String, isOnline: Boolean) {
         stopJobs()
-        coroutineScope.launch {
-            withContext(Dispatchers.IO){
-                liveData.postValue(interactor.getData(word, isOnline))
-            }
+        coroutineScope.launch (Dispatchers.IO) {
+            viewModelChannel.send(ViewState.Loading(null))
+            viewModelChannel.send(interactor.getData(word, isOnline))
         }
-        return liveData
     }
 
+    @ExperimentalCoroutinesApi
     override fun handleError(throwable: Throwable) {
-        liveData.value = ViewState.Error(throwable)
+        coroutineScope.launch {
+            viewModelChannel.send(ViewState.Error(throwable))
+        }
     }
 
+    @ExperimentalCoroutinesApi
     override fun onCleared() {
-        liveData.value = ViewState.Success(null)
+        coroutineScope.launch {
+            viewModelChannel.send(ViewState.Success(null))
+        }
         super.onCleared()
+    }
+
+    fun saveCurrentResult(data: SearchResult) {
+        interactor.currentResult = data
+    }
+
+    @ExperimentalCoroutinesApi
+    fun showData() {
+        getData(interactor.currentResult?.text ?: "", isOnline())
     }
 }

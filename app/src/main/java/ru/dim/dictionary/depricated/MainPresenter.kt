@@ -1,14 +1,5 @@
 package ru.dim.dictionary.depricated
 
-import geekbrains.ru.translator.rx.SchedulerProvider
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.observers.DisposableObserver
-import ru.dim.dictionary.model.ViewState
-import ru.dim.dictionary.interactor.MainInteractor
-import ru.dim.dictionary.model.datasource.database.DataSourceLocal
-import ru.dim.dictionary.model.datasource.server.DataSourceRemote
-import ru.dim.dictionary.model.repository.RepositoryImplementation
-
 //class MainPresenter<T: ViewState, V : IView>(
 //    private val interactor: MainInteractor = MainInteractor(
 //        RepositoryImplementation(DataSourceRemote()),

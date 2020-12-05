@@ -7,4 +7,7 @@
     <string name="search">Search</string>
     <string name="search_hint">New word</string>
     <string name="delete_description">X</string>
+    <string name="image">Image</string>
+    <string name="internetIsNotAvailable">Internet is not available</string>
+    <string name="history">History</string>
 </resources>
