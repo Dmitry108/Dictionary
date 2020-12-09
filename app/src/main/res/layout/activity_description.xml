@@ -28,7 +28,7 @@
             style="@style/BaseTextStyle"
             android:layout_marginStart="@dimen/margin_medium"/>
 
-        <ru.dim.dictionary.utils.SquareImageView
+        <ru.dim.utils.SquareImageView
             android:id="@+id/description_imageview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

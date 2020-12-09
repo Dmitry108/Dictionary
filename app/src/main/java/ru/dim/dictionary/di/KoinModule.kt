@@ -2,19 +2,21 @@ package ru.dim.dictionary.di
 
 import androidx.room.Room
 import org.koin.android.viewmodel.dsl.viewModel
-import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import ru.dim.dictionary.interactor.DataInteractor
-import ru.dim.dictionary.interactor.IDataInteractor
-import ru.dim.dictionary.model.ViewState
-import ru.dim.dictionary.model.datasource.database.*
-import ru.dim.dictionary.model.datasource.server.RetrofitProvider
-import ru.dim.dictionary.model.entity.SearchResult
-import ru.dim.dictionary.model.repository.IRepository
-import ru.dim.dictionary.model.repository.RepositoryImplementation
+import ru.dim.core.interactor.DataInteractor
+import ru.dim.core.interactor.IDataInteractor
 import ru.dim.dictionary.viewmodel.DescriptionViewModel
-import ru.dim.dictionary.viewmodel.HistoryViewModel
 import ru.dim.dictionary.viewmodel.MainViewModel
+import ru.dim.historyscreen.HistoryViewModel
+import ru.dim.model.ViewState
+import ru.dim.model.entity.SearchResult
+import ru.dim.repository.IRepository
+import ru.dim.repository.RepositoryImplementation
+import ru.dim.repository.datasource.database.IRepositoryLocal
+import ru.dim.repository.datasource.database.LocalDatabase
+import ru.dim.repository.datasource.database.RepositoryLocal
+import ru.dim.repository.datasource.database.RoomProvider
+import ru.dim.repository.datasource.server.RetrofitProvider
 
 val viewModelModule = module {
     viewModel { MainViewModel(get()) }

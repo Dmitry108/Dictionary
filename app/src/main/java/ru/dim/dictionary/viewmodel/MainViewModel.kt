@@ -3,14 +3,14 @@ package ru.dim.dictionary.viewmodel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
-import ru.dim.dictionary.interactor.IDataInteractor
-import ru.dim.dictionary.model.ViewState
-import ru.dim.dictionary.model.entity.SearchResult
-import ru.dim.dictionary.utils.isOnline
+import ru.dim.core.interactor.IDataInteractor
+import ru.dim.dictionary.ulils.isOnline
+import ru.dim.model.ViewState
+import ru.dim.model.entity.SearchResult
 
 class MainViewModel (
     private val interactor: IDataInteractor<ViewState>
-) : BaseViewModel<ViewState>(){
+) : ru.dim.core.base.BaseViewModel<ViewState>(){
 
     @ExperimentalCoroutinesApi
     fun getData(word: String, isOnline: Boolean) {

@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Dictionary</string>
+    <string name="reload">Reload</string>
+    <string name="error">Error</string>
+    <string name="undefined_error">Undefined error</string>
+    <string name="empty_server_response_on_success">Response from server is empty</string>
+    <string name="search">Search</string>
+    <string name="search_hint">New word</string>
+    <string name="delete_description">X</string>
+    <string name="image">Image</string>
+    <string name="internetIsNotAvailable">Internet is not available</string>
+    <string name="history">History</string>
+</resources>
