@@ -1,6 +1,6 @@
 package ru.dim.dictionary.depricated
 
-import ru.dim.dictionary.model.ViewState
+import ru.dim.model.ViewState
 
 interface IPresenter<T: ViewState, V: IView> {
     fun attachView(view: V)

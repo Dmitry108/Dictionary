@@ -1,2 +1,9 @@
+include ':historyscreen'
+include ':historyfeature'
+include ':historyfeature'
+include ':utils'
+include ':model'
+include ':repository'
+include ':core'
 include ':app'
 rootProject.name = "Dictionary"

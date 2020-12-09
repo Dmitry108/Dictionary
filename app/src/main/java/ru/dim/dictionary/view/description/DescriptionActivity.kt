@@ -12,11 +12,11 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel
+import ru.dim.core.base.BaseActivity
 import ru.dim.dictionary.R
-import ru.dim.dictionary.model.ViewState
-import ru.dim.dictionary.model.entity.SearchResult
-import ru.dim.dictionary.view.base.BaseActivity
 import ru.dim.dictionary.viewmodel.DescriptionViewModel
+import ru.dim.model.ViewState
+import ru.dim.model.entity.SearchResult
 
 class DescriptionActivity : BaseActivity<ViewState>() {
 
@@ -74,7 +74,7 @@ class DescriptionActivity : BaseActivity<ViewState>() {
             .load(imageUrl)
             .placeholder(R.drawable.ic_empty_image)
             .fit().centerCrop()
-            .into(imageView, object : Callback{
+            .into(imageView, object : Callback {
                 override fun onSuccess() {
                     stopRefreshing()
                 }

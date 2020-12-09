@@ -9,23 +9,22 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import geekbrains.ru.translator.view.main.SearchDialogFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.loading_layout.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel
+import ru.dim.core.base.BaseActivity
 import ru.dim.dictionary.R
-import ru.dim.dictionary.model.ViewState
-import ru.dim.dictionary.model.entity.SearchResult
-import ru.dim.dictionary.utils.HISTORY_REQUEST_CODE
-import ru.dim.dictionary.utils.HISTORY_RESULT_CODE
-import ru.dim.dictionary.utils.isOnline
-import ru.dim.dictionary.view.base.BaseActivity
+import ru.dim.dictionary.ulils.isOnline
 import ru.dim.dictionary.view.description.DescriptionActivity
-import ru.dim.dictionary.view.history.HistoryActivity
 import ru.dim.dictionary.viewmodel.MainViewModel
+import ru.dim.historyscreen.HistoryActivity
+import ru.dim.model.ViewState
+import ru.dim.model.entity.SearchResult
+import ru.dim.utils.HISTORY_REQUEST_CODE
+import ru.dim.utils.HISTORY_RESULT_CODE
 
 class MainActivity : BaseActivity<ViewState>() {
 

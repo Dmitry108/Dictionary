@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_main_recyclerview.view.*
 import ru.dim.dictionary.R
-import ru.dim.dictionary.model.entity.SearchResult
+import ru.dim.model.entity.SearchResult
 
 class MainRecyclerViewAdapter (
     private var data: List<SearchResult>,
@@ -20,7 +20,8 @@ class MainRecyclerViewAdapter (
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainItemViewHolder {
-        return MainItemViewHolder(LayoutInflater.from(parent.context)
+        return MainItemViewHolder(
+            LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_main_recyclerview, parent, false) as View
         )
     }

@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="margin_medium">16dp</dimen>
-    <dimen name="hairline">1px</dimen>
-<!--    <dimen name="margin_xxxx_small">2dp</dimen>-->
-<!--    <dimen name="margin_xxx_small">3dp</dimen>-->
-    <dimen name="margin_xx_small">5dp</dimen>
-<!--    <dimen name="margin_x_small">7dp</dimen>-->
-    <dimen name="margin_small">10dp</dimen>
-<!--    <dimen name="margin_x_medium">17dp</dimen>-->
-    <dimen name="margin_xx_medium">20dp</dimen>
-    <dimen name="margin_xxx_medium">25dp</dimen>
-<!--    <dimen name="margin_large">30dp</dimen>-->
-<!--    <dimen name="margin_x_large">35dp</dimen>-->
-<!--    <dimen name="margin_xx_large">40dp</dimen>-->
-<!--    <dimen name="margin_xxx_large">45dp</dimen>-->
+<!--    <dimen name="margin_medium">16dp</dimen>-->
+<!--    <dimen name="hairline">1px</dimen>-->
+<!--&lt;!&ndash;    <dimen name="margin_xxxx_small">2dp</dimen>&ndash;&gt;-->
+<!--&lt;!&ndash;    <dimen name="margin_xxx_small">3dp</dimen>&ndash;&gt;-->
+<!--    <dimen name="margin_xx_small">5dp</dimen>-->
+<!--&lt;!&ndash;    <dimen name="margin_x_small">7dp</dimen>&ndash;&gt;-->
+<!--    <dimen name="margin_small">10dp</dimen>-->
+<!--&lt;!&ndash;    <dimen name="margin_x_medium">17dp</dimen>&ndash;&gt;-->
+<!--    <dimen name="margin_xx_medium">20dp</dimen>-->
+<!--    <dimen name="margin_xxx_medium">25dp</dimen>-->
+<!--&lt;!&ndash;    <dimen name="margin_large">30dp</dimen>&ndash;&gt;-->
+<!--&lt;!&ndash;    <dimen name="margin_x_large">35dp</dimen>&ndash;&gt;-->
+<!--&lt;!&ndash;    <dimen name="margin_xx_large">40dp</dimen>&ndash;&gt;-->
+<!--&lt;!&ndash;    <dimen name="margin_xxx_large">45dp</dimen>&ndash;&gt;-->
 
-    //Text size
-<!--    <dimen name="text_size_tip">10sp</dimen>-->
-    <dimen name="text_size_standard">17sp</dimen>
-    <dimen name="text_size_standard_header">20sp</dimen>
-    <dimen name="text_size_large">25sp</dimen>
+<!--    //Text size-->
+<!--&lt;!&ndash;    <dimen name="text_size_tip">10sp</dimen>&ndash;&gt;-->
+<!--    <dimen name="text_size_standard">17sp</dimen>-->
+<!--    <dimen name="text_size_standard_header">20sp</dimen>-->
+<!--    <dimen name="text_size_large">25sp</dimen>-->
 
-    //Corner radius
-    <dimen name="bottom_sheet_dialog_corner_radius">10dp</dimen>
+<!--    //Corner radius-->
+<!--    <dimen name="bottom_sheet_dialog_corner_radius">10dp</dimen>-->
 </resources>

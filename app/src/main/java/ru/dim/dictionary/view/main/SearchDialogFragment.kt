@@ -1,4 +1,4 @@
-package geekbrains.ru.translator.view.main
+package ru.dim.dictionary.view.main
 
 import android.os.Bundle
 import android.text.Editable

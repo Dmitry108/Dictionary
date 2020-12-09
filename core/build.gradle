@@ -1,0 +1,14 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+}
+
+dependencies {
+    implementation project(Modules.model)
+    implementation project(Modules.repository)
+
+    implementation Design.appcompat
+    implementation Coroutines.android
+    implementation Coroutines.core
+    implementation Lifecycle.viewmodel
+}
