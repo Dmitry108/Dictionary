@@ -9,6 +9,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.loading_layout.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -17,6 +18,8 @@ import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel
 import ru.dim.core.base.BaseActivity
 import ru.dim.dictionary.R
+import ru.dim.dictionary.ulils.UpdateManager
+import ru.dim.dictionary.ulils.UpdateManager.UpdateCallback
 import ru.dim.dictionary.ulils.isOnline
 import ru.dim.dictionary.view.description.DescriptionActivity
 import ru.dim.dictionary.viewmodel.MainViewModel
@@ -25,6 +28,8 @@ import ru.dim.model.ViewState
 import ru.dim.model.entity.SearchResult
 import ru.dim.utils.HISTORY_REQUEST_CODE
 import ru.dim.utils.HISTORY_RESULT_CODE
+import ru.dim.utils.UPDATE_REQUEST_CODE
+import ru.dim.utils.UPDATE_RESULT_CODE
 
 class MainActivity : BaseActivity<ViewState>() {
 
@@ -57,18 +62,33 @@ class MainActivity : BaseActivity<ViewState>() {
         )
     }
 
+    private val updateManager: UpdateManager by lazy {
+        UpdateManager(callback = object : UpdateCallback{
+            override fun onDownloaded() {
+                Snackbar.make(mainActivity, "An update has just been downloaded.", Snackbar.LENGTH_INDEFINITE).apply {
+                    setAction("RESTART") { updateManager.completeUpdate() }
+                    show()
+                }
+            }})
+    }
+
     @ExperimentalCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        updateManager.checkForUpdate(this)
 
         lifecycleScope.launch{
             viewModel.getChannel().consumeEach {
                 renderData(it)
             }
         }
-
         searchFab.setOnClickListener(onButtonClickListener)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateManager.onResume(this)
     }
 
     @ExperimentalCoroutinesApi
@@ -145,10 +165,17 @@ class MainActivity : BaseActivity<ViewState>() {
             else -> super.onOptionsItemSelected(item)
         }
 
+    @ExperimentalCoroutinesApi
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == HISTORY_REQUEST_CODE && resultCode == HISTORY_RESULT_CODE) {
             viewModel.showData()
+        }
+        if (requestCode == UPDATE_REQUEST_CODE) {
+            if (resultCode == UPDATE_RESULT_CODE) { updateManager.unregisterListener() }
+            else {
+                Snackbar.make(mainActivity, "Update flow failed! Result code: $resultCode", Snackbar.LENGTH_LONG).show()
+            }
         }
     }
 }

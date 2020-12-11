@@ -30,6 +30,7 @@ subprojects {
                 defaultConfig {
                     minSdkVersion Config.minSdkVersion
                     targetSdkVersion Config.targetSdkVersion
+//                    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
                 }
 
                 compileOptions {
@@ -40,6 +41,11 @@ subprojects {
                 kotlinOptions {
                     jvmTarget = Config.kotlinVersion
                 }
+            }
+
+            dependencies {
+                implementation Testing.junit
+                implementation Testing.extJunit
             }
         }
     }

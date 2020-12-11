@@ -18,7 +18,8 @@ class DictionaryApp : Application() {
         instance = this
         startKoin{
             androidLogger()
-            androidContext(this@DictionaryApp)
+//            androidContext(this@DictionaryApp)
+            androidContext(applicationContext)
             modules(listOf(viewModelModule, interactorModule, repositoryModule))
         }
     }
