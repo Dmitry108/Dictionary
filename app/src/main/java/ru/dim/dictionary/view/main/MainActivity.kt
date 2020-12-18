@@ -7,19 +7,15 @@ import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.play.core.splitinstall.SplitInstallManager
-import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
-import com.google.android.play.core.splitinstall.SplitInstallRequest
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.loading_layout.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.android.scope.currentScope
 import ru.dim.core.base.BaseActivity
 import ru.dim.dictionary.R
 import ru.dim.dictionary.di.injectDependencies
@@ -29,7 +25,6 @@ import ru.dim.dictionary.ulils.UpdateManager.UpdateCallback
 import ru.dim.dictionary.ulils.isOnline
 import ru.dim.dictionary.view.description.DescriptionActivity
 import ru.dim.dictionary.viewmodel.MainViewModel
-//import ru.dim.historyscreen.HistoryActivity
 import ru.dim.model.ViewState
 import ru.dim.model.entity.SearchResult
 import ru.dim.utils.*
@@ -41,7 +36,11 @@ class MainActivity : BaseActivity<ViewState>() {
         private const val BOTTOM_SHEET_FRAGMENT_DIALOG_TAG = "bottom sheet tag"
     }
 
-    override val viewModel: MainViewModel by viewModel()
+    init {
+        injectDependencies()
+    }
+
+    override val viewModel: MainViewModel by currentScope.inject()
 
     private var adapter: MainRecyclerViewAdapter? = null
 
@@ -93,7 +92,7 @@ class MainActivity : BaseActivity<ViewState>() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         updateManager.checkForUpdate(this)
-        injectDependencies()
+
         lifecycleScope.launch{
             viewModel.getChannel().consumeEach {
                 renderData(it)

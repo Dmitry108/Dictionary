@@ -11,16 +11,21 @@ import kotlinx.android.synthetic.main.activity_description.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.android.scope.currentScope
 import ru.dim.core.base.BaseActivity
 import ru.dim.dictionary.R
+import ru.dim.dictionary.di.injectDependencies
 import ru.dim.dictionary.viewmodel.DescriptionViewModel
 import ru.dim.model.ViewState
 import ru.dim.model.entity.SearchResult
 
 class DescriptionActivity : BaseActivity<ViewState>() {
 
-    override val viewModel: DescriptionViewModel by viewModel()
+    init {
+        injectDependencies()
+    }
+
+    override val viewModel: DescriptionViewModel by currentScope.inject()
 
     @ExperimentalCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {

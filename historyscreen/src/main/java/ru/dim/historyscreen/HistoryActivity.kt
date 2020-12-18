@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.activity_history.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.android.scope.currentScope
 import ru.dim.core.base.BaseActivity
 import ru.dim.model.ViewState
 import ru.dim.model.entity.SearchResult
@@ -17,7 +17,12 @@ import ru.dim.utils.HISTORY_RESULT_CODE
 
 class HistoryActivity : BaseActivity<ViewState>() {
 
-    override val viewModel: HistoryViewModel by viewModel()
+    init {
+        injectDependencies()
+    }
+
+    override val viewModel: HistoryViewModel by currentScope.inject()
+
     private val adapter by lazy {
         HistoryRecyclerViewAdapter(
             onListItemClickListener
@@ -40,7 +45,6 @@ class HistoryActivity : BaseActivity<ViewState>() {
         setContentView(R.layout.activity_history)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        injectDependencies()
         lifecycleScope.launch{
             viewModel.getChannel().consumeEach {
                 renderData(it)
