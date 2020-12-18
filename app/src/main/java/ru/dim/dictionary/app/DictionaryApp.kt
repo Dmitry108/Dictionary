@@ -20,7 +20,7 @@ class DictionaryApp : Application() {
             androidLogger()
 //            androidContext(this@DictionaryApp)
             androidContext(applicationContext)
-            modules(listOf(viewModelModule, interactorModule, repositoryModule))
+//            modules(listOf(viewModelModule, interactorModule, repositoryModule))
         }
     }
 }

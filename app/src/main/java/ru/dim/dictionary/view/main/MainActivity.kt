@@ -7,9 +7,13 @@ import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.play.core.splitinstall.SplitInstallManager
+import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
+import com.google.android.play.core.splitinstall.SplitInstallRequest
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.loading_layout.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -18,18 +22,18 @@ import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel
 import ru.dim.core.base.BaseActivity
 import ru.dim.dictionary.R
+import ru.dim.dictionary.di.injectDependencies
+import ru.dim.dictionary.ulils.FeatureManager
 import ru.dim.dictionary.ulils.UpdateManager
 import ru.dim.dictionary.ulils.UpdateManager.UpdateCallback
 import ru.dim.dictionary.ulils.isOnline
 import ru.dim.dictionary.view.description.DescriptionActivity
 import ru.dim.dictionary.viewmodel.MainViewModel
-import ru.dim.historyscreen.HistoryActivity
+//import ru.dim.historyscreen.HistoryActivity
 import ru.dim.model.ViewState
 import ru.dim.model.entity.SearchResult
-import ru.dim.utils.HISTORY_REQUEST_CODE
-import ru.dim.utils.HISTORY_RESULT_CODE
-import ru.dim.utils.UPDATE_REQUEST_CODE
-import ru.dim.utils.UPDATE_RESULT_CODE
+import ru.dim.utils.*
+import java.lang.Exception
 
 class MainActivity : BaseActivity<ViewState>() {
 
@@ -65,11 +69,23 @@ class MainActivity : BaseActivity<ViewState>() {
     private val updateManager: UpdateManager by lazy {
         UpdateManager(callback = object : UpdateCallback{
             override fun onDownloaded() {
-                Snackbar.make(mainActivity, "An update has just been downloaded.", Snackbar.LENGTH_INDEFINITE).apply {
+                Snackbar.make(mainActivity, resources.getString(R.string.update_is_downloaded), Snackbar.LENGTH_INDEFINITE).apply {
                     setAction("RESTART") { updateManager.completeUpdate() }
                     show()
                 }
             }})
+    }
+
+    private val featureManager: FeatureManager by lazy {
+        FeatureManager(callback = object : FeatureManager.FeatureCallback {
+            override fun onSuccess() {
+                val intent = Intent().setClassName(packageName, HISTORY_ACTIVITY_PATH)
+                startActivityForResult(intent, HISTORY_REQUEST_CODE)
+            }
+            override fun onFailure(error: Exception) {
+                Snackbar.make(mainActivity, "${resources.getString(R.string.could_not_download_feature)}: ${error.message}", Snackbar.LENGTH_LONG).show()
+            }
+        })
     }
 
     @ExperimentalCoroutinesApi
@@ -77,7 +93,7 @@ class MainActivity : BaseActivity<ViewState>() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         updateManager.checkForUpdate(this)
-
+        injectDependencies()
         lifecycleScope.launch{
             viewModel.getChannel().consumeEach {
                 renderData(it)
@@ -159,7 +175,7 @@ class MainActivity : BaseActivity<ViewState>() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean =
         when (item.itemId) {
             R.id.menu_main -> {
-                startActivityForResult(Intent(this, HistoryActivity::class.java), HISTORY_REQUEST_CODE)
+                featureManager.installFeature()
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -174,7 +190,7 @@ class MainActivity : BaseActivity<ViewState>() {
         if (requestCode == UPDATE_REQUEST_CODE) {
             if (resultCode == UPDATE_RESULT_CODE) { updateManager.unregisterListener() }
             else {
-                Snackbar.make(mainActivity, "Update flow failed! Result code: $resultCode", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(mainActivity, "${resources.getString(R.string.update_was_failed)} $resultCode", Snackbar.LENGTH_LONG).show()
             }
         }
     }

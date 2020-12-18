@@ -40,6 +40,7 @@ class HistoryActivity : BaseActivity<ViewState>() {
         setContentView(R.layout.activity_history)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        injectDependencies()
         lifecycleScope.launch{
             viewModel.getChannel().consumeEach {
                 renderData(it)
@@ -72,7 +73,7 @@ class HistoryActivity : BaseActivity<ViewState>() {
         Log.d("...", data.toString())
         data?.let {
             if(it.isEmpty()) {
-                Toast.makeText(this, resources.getString(R.string.empty_server_response_on_success), Toast.LENGTH_LONG).show()
+                Toast.makeText(this, resources.getString(ru.dim.utils.R.string.empty_server_response_on_success), Toast.LENGTH_LONG).show()
             } else {
                 setDataToAdapter(data)
             }

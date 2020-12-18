@@ -14,7 +14,6 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/core" />
-            <option value="$PROJECT_DIR$/historyfeature" />
             <option value="$PROJECT_DIR$/historyscreen" />
             <option value="$PROJECT_DIR$/model" />
             <option value="$PROJECT_DIR$/repository" />
