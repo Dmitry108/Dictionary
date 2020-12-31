@@ -22,14 +22,14 @@
             style="@style/HeaderTextStyle" />
 
         <TextView
-            android:id="@+id/description_textview"
+            android:id="@+id/description_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/BaseTextStyle"
             android:layout_marginStart="@dimen/margin_medium"/>
 
         <ru.dim.utils.SquareImageView
-            android:id="@+id/description_imageview"
+            android:id="@+id/description_imageView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_medium"

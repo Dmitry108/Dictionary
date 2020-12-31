@@ -2,24 +2,24 @@
 
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/mainActivity"
+    android:id="@+id/main_activity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
     <FrameLayout
-        android:id="@+id/successLayout"
+        android:id="@+id/success_layout"
         android:layout_width="match_parent"
         android:gravity="center"
         android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/mainRecyclerView"
+            android:id="@+id/main_recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/searchFab"
+            android:id="@+id/search_fab"
             android:src="@drawable/ic_baseline_search_24"
             android:layout_width="wrap_content"
             android:layout_gravity="bottom|end"
@@ -34,18 +34,18 @@
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="gone"
-        android:id="@+id/errorLayout"
+        android:id="@+id/error_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/errorTextView"
+            android:id="@+id/error_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/error"/>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/reloadButton"
+            android:id="@+id/reload_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/reload"/>

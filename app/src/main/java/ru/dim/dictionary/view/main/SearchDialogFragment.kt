@@ -6,9 +6,11 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.android.synthetic.main.search_dialog_fragment.*
+import com.google.android.material.textfield.TextInputEditText
 import ru.dim.dictionary.R
+import ru.dim.utils.viewById
 
 class SearchDialogFragment : BottomSheetDialogFragment() {
 
@@ -17,6 +19,9 @@ class SearchDialogFragment : BottomSheetDialogFragment() {
             return SearchDialogFragment()
         }
     }
+
+    private val searchButtonTextView by viewById<TextView>(R.id.search_buttonTextView)
+    private val searchEditText by viewById<TextInputEditText>(R.id.search_editText)
 
     private var onSearchClickListener: OnSearchClickListener? = null
     private val textWatcher = object : TextWatcher {

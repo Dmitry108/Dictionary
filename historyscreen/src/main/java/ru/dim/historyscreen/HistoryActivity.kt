@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_history.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.consumeEach
@@ -23,6 +24,9 @@ class HistoryActivity : BaseActivity<ViewState>() {
 
     override val viewModel: HistoryViewModel by currentScope.inject()
 
+    private val historyRecyclerview by lazy<RecyclerView>(LazyThreadSafetyMode.NONE) {
+        findViewById(R.id.history_recyclerview)
+    }
     private val adapter by lazy {
         HistoryRecyclerViewAdapter(
             onListItemClickListener

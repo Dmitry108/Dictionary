@@ -7,11 +7,15 @@ import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.FrameLayout
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.loading_layout.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
@@ -42,6 +46,14 @@ class MainActivity : BaseActivity<ViewState>() {
 
     override val viewModel: MainViewModel by currentScope.inject()
 
+    private val searchFab by viewById<FloatingActionButton>(R.id.search_fab)
+    private val mainRecyclerView by viewById<RecyclerView>(R.id.main_recyclerView)
+    private val successLayout by viewById<FrameLayout>(R.id.success_layout)
+    private val loadingLayout by viewById<FrameLayout>(R.id.loading_layout)
+    private val errorLayout by viewById<LinearLayout>(R.id.error_layout)
+    private val reloadButton by viewById<MaterialButton>(R.id.reload_button)
+    private val errorTextView by viewById<TextView>(R.id.error_textView)
+
     private var adapter: MainRecyclerViewAdapter? = null
 
     private val onListItemClickListener: MainRecyclerViewAdapter.OnListItemClickListener =
@@ -68,7 +80,7 @@ class MainActivity : BaseActivity<ViewState>() {
     private val updateManager: UpdateManager by lazy {
         UpdateManager(callback = object : UpdateCallback{
             override fun onDownloaded() {
-                Snackbar.make(mainActivity, resources.getString(R.string.update_is_downloaded), Snackbar.LENGTH_INDEFINITE).apply {
+                Snackbar.make(searchFab, resources.getString(R.string.update_is_downloaded), Snackbar.LENGTH_INDEFINITE).apply {
                     setAction("RESTART") { updateManager.completeUpdate() }
                     show()
                 }
@@ -82,7 +94,7 @@ class MainActivity : BaseActivity<ViewState>() {
                 startActivityForResult(intent, HISTORY_REQUEST_CODE)
             }
             override fun onFailure(error: Exception) {
-                Snackbar.make(mainActivity, "${resources.getString(R.string.could_not_download_feature)}: ${error.message}", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(searchFab, "${resources.getString(R.string.could_not_download_feature)}: ${error.message}", Snackbar.LENGTH_LONG).show()
             }
         })
     }
@@ -189,7 +201,7 @@ class MainActivity : BaseActivity<ViewState>() {
         if (requestCode == UPDATE_REQUEST_CODE) {
             if (resultCode == UPDATE_RESULT_CODE) { updateManager.unregisterListener() }
             else {
-                Snackbar.make(mainActivity, "${resources.getString(R.string.update_was_failed)} $resultCode", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(searchFab, "${resources.getString(R.string.update_was_failed)} $resultCode", Snackbar.LENGTH_LONG).show()
             }
         }
     }
