@@ -68,6 +68,8 @@ object Versions {
     const val lifecycle = "2.2.0"
     // Room
     const val room = "2.3.0-alpha03"
+    // Google
+    const val googlePlayCore = "1.9.0"
 }
 
 object Design {
@@ -138,17 +140,7 @@ object Room {
     const val compiler = "androidx.room:room-compiler:${Versions.room}"
     const val ktx = "androidx.room:room-ktx:${Versions.room}"
 }
-//    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-//}
-//
-//buildTypes {
-//    release {
-//        minifyEnabled false
-//        proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-//    }
-//}
-//}
-//
-//dependencies {
-//    implementation fileTree(dir: "libs", include: ["*.jar"])
-//    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+object Google {
+    const val playCore = "com.google.android.play:core:${Versions.googlePlayCore}"
+}

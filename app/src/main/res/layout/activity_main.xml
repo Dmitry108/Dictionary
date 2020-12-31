@@ -1,52 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <FrameLayout
-xmlns:android="http://schemas.android.com/apk/res/android"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:fitsSystemWindows="true">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
     <FrameLayout
-    android:id="@+id/successLayout"
-    android:layout_width="match_parent"
-    android:gravity="center"
-    android:layout_height="match_parent">
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/mainRecyclerView"
+        android:id="@+id/successLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:gravity="center"
+        android:layout_height="match_parent">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/searchFab"
-        android:src="@drawable/ic_baseline_search_24"
-        android:layout_width="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginBottom="@dimen/margin_medium"
-        android:layout_marginEnd="@dimen/margin_medium"
-        android:layout_height="wrap_content"/>
-</FrameLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/mainRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
-<include layout="@layout/loading_layout"/>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/searchFab"
+            android:src="@drawable/ic_baseline_search_24"
+            android:layout_width="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="@dimen/margin_medium"
+            android:layout_marginEnd="@dimen/margin_medium"
+            android:layout_height="wrap_content"/>
+    </FrameLayout>
 
-<LinearLayout
-    android:gravity="center"
-    android:orientation="vertical"
-    android:visibility="gone"
-    android:id="@+id/errorLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    <include layout="@layout/loading_layout"/>
 
-    <TextView
-        android:id="@+id/errorTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/error"/>
+    <LinearLayout
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:id="@+id/errorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/reloadButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/reload"/>
-</LinearLayout>
+        <TextView
+            android:id="@+id/errorTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/error"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/reloadButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/reload"/>
+    </LinearLayout>
 </FrameLayout>

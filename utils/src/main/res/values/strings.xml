@@ -10,4 +10,8 @@
     <string name="image">Image</string>
     <string name="internetIsNotAvailable">Internet is not available</string>
     <string name="history">History</string>
+    <string name="title_history_feature">History Screen Feature</string>
+    <string name="could_not_download_feature">Couldn\'t download feature</string>
+    <string name="update_is_downloaded">An update has just been downloaded.</string>
+    <string name="update_was_failed">Update flow failed! Result code:</string>
 </resources>

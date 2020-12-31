@@ -1,20 +1,45 @@
 plugins {
-    id 'com.android.library'
+    id 'com.android.dynamic-feature'
     id 'kotlin-android'
     id 'kotlin-android-extensions'
 }
 
+android {
+    compileSdkVersion Config.compileSdkVersion
+
+//    defaultConfig {
+//        minSdkVersion Config.minSdkVersion
+//        targetSdkVersion Config.targetSdkVersion
+////                    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+//    }
+//
+//    compileOptions {
+//        sourceCompatibility Config.javaVersion
+//        targetCompatibility Config.javaVersion
+//    }
+//
+//    kotlinOptions {
+//        jvmTarget = Config.kotlinVersion
+//    }
+}
+
+
+
 dependencies {
+    implementation project(Modules.app)
     implementation project(Modules.core)
     implementation project(Modules.model)
     implementation project(Modules.utils)
 
     implementation Design.appcompat
     implementation Design.material
+    implementation Testing.junit
+    implementation Testing.extJunit
     implementation Coroutines.core
     implementation Coroutines.android
     implementation Koin.android
     implementation Koin.androidViewmodel
     implementation Lifecycle.runtime
     implementation Lifecycle.viewmodel
+
 }

@@ -1,6 +1,4 @@
 include ':historyscreen'
-include ':historyfeature'
-include ':historyfeature'
 include ':utils'
 include ':model'
 include ':repository'

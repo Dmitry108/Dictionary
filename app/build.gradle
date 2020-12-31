@@ -19,13 +19,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    dynamicFeatures = [Modules.historyscreen]
 }
 
 dependencies {
     //Modules
     implementation project(Modules.core)
     implementation project(Modules.model)
-    implementation project(Modules.historyscreen)
     implementation project(Modules.utils)
     implementation project(Modules.repository)
 
@@ -53,4 +54,5 @@ dependencies {
     implementation Room.runtime
     kapt Room.compiler
     implementation Room.ktx
+    implementation Google.playCore
 }
