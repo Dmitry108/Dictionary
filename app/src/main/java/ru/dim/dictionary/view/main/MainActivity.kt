@@ -7,19 +7,19 @@ import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import androidx.core.app.ActivityCompat
+import android.widget.FrameLayout
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.play.core.splitinstall.SplitInstallManager
-import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
-import com.google.android.play.core.splitinstall.SplitInstallRequest
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.loading_layout.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.android.scope.currentScope
 import ru.dim.core.base.BaseActivity
 import ru.dim.dictionary.R
 import ru.dim.dictionary.di.injectDependencies
@@ -29,7 +29,6 @@ import ru.dim.dictionary.ulils.UpdateManager.UpdateCallback
 import ru.dim.dictionary.ulils.isOnline
 import ru.dim.dictionary.view.description.DescriptionActivity
 import ru.dim.dictionary.viewmodel.MainViewModel
-//import ru.dim.historyscreen.HistoryActivity
 import ru.dim.model.ViewState
 import ru.dim.model.entity.SearchResult
 import ru.dim.utils.*
@@ -41,7 +40,19 @@ class MainActivity : BaseActivity<ViewState>() {
         private const val BOTTOM_SHEET_FRAGMENT_DIALOG_TAG = "bottom sheet tag"
     }
 
-    override val viewModel: MainViewModel by viewModel()
+    init {
+        injectDependencies()
+    }
+
+    override val viewModel: MainViewModel by currentScope.inject()
+
+    private val searchFab by viewById<FloatingActionButton>(R.id.search_fab)
+    private val mainRecyclerView by viewById<RecyclerView>(R.id.main_recyclerView)
+    private val successLayout by viewById<FrameLayout>(R.id.success_layout)
+    private val loadingLayout by viewById<FrameLayout>(R.id.loading_layout)
+    private val errorLayout by viewById<LinearLayout>(R.id.error_layout)
+    private val reloadButton by viewById<MaterialButton>(R.id.reload_button)
+    private val errorTextView by viewById<TextView>(R.id.error_textView)
 
     private var adapter: MainRecyclerViewAdapter? = null
 
@@ -69,7 +80,7 @@ class MainActivity : BaseActivity<ViewState>() {
     private val updateManager: UpdateManager by lazy {
         UpdateManager(callback = object : UpdateCallback{
             override fun onDownloaded() {
-                Snackbar.make(mainActivity, resources.getString(R.string.update_is_downloaded), Snackbar.LENGTH_INDEFINITE).apply {
+                Snackbar.make(searchFab, resources.getString(R.string.update_is_downloaded), Snackbar.LENGTH_INDEFINITE).apply {
                     setAction("RESTART") { updateManager.completeUpdate() }
                     show()
                 }
@@ -83,7 +94,7 @@ class MainActivity : BaseActivity<ViewState>() {
                 startActivityForResult(intent, HISTORY_REQUEST_CODE)
             }
             override fun onFailure(error: Exception) {
-                Snackbar.make(mainActivity, "${resources.getString(R.string.could_not_download_feature)}: ${error.message}", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(searchFab, "${resources.getString(R.string.could_not_download_feature)}: ${error.message}", Snackbar.LENGTH_LONG).show()
             }
         })
     }
@@ -93,7 +104,7 @@ class MainActivity : BaseActivity<ViewState>() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         updateManager.checkForUpdate(this)
-        injectDependencies()
+
         lifecycleScope.launch{
             viewModel.getChannel().consumeEach {
                 renderData(it)
@@ -190,7 +201,7 @@ class MainActivity : BaseActivity<ViewState>() {
         if (requestCode == UPDATE_REQUEST_CODE) {
             if (resultCode == UPDATE_RESULT_CODE) { updateManager.unregisterListener() }
             else {
-                Snackbar.make(mainActivity, "${resources.getString(R.string.update_was_failed)} $resultCode", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(searchFab, "${resources.getString(R.string.update_was_failed)} $resultCode", Snackbar.LENGTH_LONG).show()
             }
         }
     }

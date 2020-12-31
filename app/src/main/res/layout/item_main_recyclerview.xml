@@ -7,7 +7,7 @@
     android:layout_height="wrap_content">
     <ImageView
         android:layout_margin="@dimen/margin_medium"
-        android:id="@+id/imageView"
+        android:id="@+id/item_imageView"
         android:layout_width="100dp"
         android:layout_height="100dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -17,23 +17,23 @@
     <TextView
         android:layout_marginTop="@dimen/margin_medium"
         android:layout_marginStart="@dimen/margin_medium"
-        android:id="@+id/headerTextView"
+        android:id="@+id/header_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/HeaderTextStyle"
         tools:text="Header"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@id/imageView"/>
+        app:layout_constraintStart_toEndOf="@id/item_imageView"/>
 
     <TextView
         android:layout_marginTop="@dimen/margin_small"
         android:layout_marginStart="@dimen/margin_medium"
-        android:id="@+id/descriptionTextView"
+        android:id="@+id/description_textView"
         android:layout_width="wrap_content"
         style="@style/BaseTextStyle"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/headerTextView"
-        app:layout_constraintStart_toEndOf="@id/imageView"/>
+        app:layout_constraintTop_toBottomOf="@id/header_textView"
+        app:layout_constraintStart_toEndOf="@id/item_imageView"/>
 
     <View xmlns:android="http://schemas.android.com/apk/res/android"
           android:layout_width="match_parent"

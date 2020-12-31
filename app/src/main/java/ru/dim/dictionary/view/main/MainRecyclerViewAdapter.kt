@@ -3,11 +3,13 @@ package ru.dim.dictionary.view.main
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.item_main_recyclerview.view.*
 import ru.dim.dictionary.R
 import ru.dim.model.entity.SearchResult
+import ru.dim.utils.viewById
 
 class MainRecyclerViewAdapter (
     private var data: List<SearchResult>,
@@ -35,14 +37,17 @@ class MainRecyclerViewAdapter (
     }
 
     inner class MainItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        private val headerTextView by itemView.viewById<TextView>(R.id.header_textView)
+        private val descriptionTextView by itemView.viewById<TextView>(R.id.description_textView)
+        private val imageView by itemView.viewById<ImageView>(R.id.item_imageView)
 
         fun bind(data: SearchResult) {
             if (layoutPosition != RecyclerView.NO_POSITION) {
-                itemView.headerTextView.text = data.text
-                itemView.descriptionTextView.text = data.meanings?.get(0)?.translation?.text
+                headerTextView.text = data.text
+                descriptionTextView.text = data.meanings?.get(0)?.translation?.text
                 Picasso.with(itemView.context)
                     .load("https:${data.meanings?.get(0)?.previewUrl}")
-                    .into(itemView.imageView)
+                    .into(imageView)
                 itemView.setOnClickListener { openInNewWindow(data) }
             }
         }

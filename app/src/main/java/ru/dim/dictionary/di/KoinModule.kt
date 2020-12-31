@@ -1,11 +1,16 @@
 package ru.dim.dictionary.di
 
+import android.util.Log
 import androidx.room.Room
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.core.context.loadKoinModules
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import ru.dim.core.interactor.DataInteractor
 import ru.dim.core.interactor.IDataInteractor
+import ru.dim.dictionary.app.DictionaryApp
+import ru.dim.dictionary.view.description.DescriptionActivity
+import ru.dim.dictionary.view.main.MainActivity
 import ru.dim.dictionary.viewmodel.DescriptionViewModel
 import ru.dim.dictionary.viewmodel.MainViewModel
 //import ru.dim.historyscreen.HistoryViewModel
@@ -22,13 +27,16 @@ import ru.dim.repository.datasource.server.RetrofitProvider
 fun injectDependencies() = loadModules
 
 val loadModules by lazy {
-    loadKoinModules(listOf(viewModelModule, interactorModule, repositoryModule))
+    loadKoinModules(listOf(viewModelModule, repositoryModule, interactorModule))
 }
 
 val viewModelModule = module {
-    viewModel { MainViewModel(get()) }
-    viewModel { DescriptionViewModel(get()) }
-//    viewModel { HistoryViewModel(get()) }
+    scope(named<MainActivity>()) {
+        viewModel { MainViewModel(get()) }
+    }
+    scope(named<DescriptionActivity>()) {
+        viewModel { DescriptionViewModel(get()) }
+    }
 }
 
 val interactorModule = module {

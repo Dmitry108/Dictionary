@@ -3,31 +3,44 @@ package ru.dim.dictionary.view.description
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_description.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.android.scope.currentScope
 import ru.dim.core.base.BaseActivity
 import ru.dim.dictionary.R
+import ru.dim.dictionary.di.injectDependencies
 import ru.dim.dictionary.viewmodel.DescriptionViewModel
 import ru.dim.model.ViewState
 import ru.dim.model.entity.SearchResult
+import ru.dim.utils.SquareImageView
 
 class DescriptionActivity : BaseActivity<ViewState>() {
 
-    override val viewModel: DescriptionViewModel by viewModel()
+    init {
+        injectDependencies()
+    }
+
+    override val viewModel: DescriptionViewModel by currentScope.inject()
+
+    private val descriptionLayout by lazy<SwipeRefreshLayout>{ findViewById(R.id.description_layout) }
+    private val descriptionHeader by lazy<TextView>{ findViewById(R.id.description_header) }
+    private val descriptionTextView by lazy<TextView>{ findViewById(R.id.description_textView) }
+    private val descriptionImageView by lazy<SquareImageView>{ findViewById(R.id.description_imageView) }
 
     @ExperimentalCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_description)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        description_layout.setOnRefreshListener { viewModel.showData() }
+        descriptionLayout.setOnRefreshListener { viewModel.showData() }
 
         lifecycleScope.launch{
             viewModel.getChannel().consumeEach { renderData(it) }
@@ -54,19 +67,19 @@ class DescriptionActivity : BaseActivity<ViewState>() {
 
     private fun showData(data: SearchResult?){
         data?.let {
-            description_header.text = data.text
-            description_textview.text = data.meanings?.get(0)?.translation?.text
+            descriptionHeader.text = data.text
+            descriptionTextView.text = data.meanings?.get(0)?.translation?.text
             val imageUrl = data.meanings?.get(0)?.imageUrl
             if (imageUrl.isNullOrBlank()) {
                 stopRefreshing()
             } else {
-                loadPicture(description_imageview, "https:$imageUrl" )
+                loadPicture(descriptionImageView, "https:$imageUrl" )
             }
         }
     }
 
     private fun stopRefreshing() {
-        if (description_layout.isRefreshing) description_layout.isRefreshing = false
+        if (descriptionLayout.isRefreshing) description_layout.isRefreshing = false
     }
 
     private fun loadPicture(imageView: ImageView, imageUrl: String) {
